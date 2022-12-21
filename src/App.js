@@ -10,7 +10,8 @@ class App extends React.Component {
     this.state = {
       seconds: 0,
       decySeconds: 0,
-      isActive: false
+      isActive: false,
+      rounds: []
     }
   }
 
@@ -48,7 +49,7 @@ class App extends React.Component {
         isActive: false
       }
     });
-
+    
     clearInterval(this.stoperId);
   }
 
@@ -56,7 +57,20 @@ class App extends React.Component {
     this.setState((state, props) => {
       return {
         seconds: 0,
-        decySeconds: 0
+        decySeconds: 0,
+        rounds: []
+      }
+    })
+  }
+
+  addRound = () => {
+    this.setState((state, props) => {
+
+      return {
+        rounds: [...state.rounds, {
+          seconds: state.seconds,
+          decySeconds: state.decySeconds
+        }]
       }
     })
   }
@@ -69,6 +83,14 @@ class App extends React.Component {
         {!this.state.isActive && <button onClick={this.startStoper}>Start</button>}
         {!this.state.isActive && <button onClick={this.resetStoper}>Reset</button>}
         {this.state.isActive && <button onClick={this.stopStoper}>Stop</button>}
+        {this.state.isActive && <button onClick={this.addRound}>Round</button>}
+        <ol>
+          {
+            this.state.rounds.map((round, idx) =>
+              <li key={idx}>{round.seconds} : {round.decySeconds}</li>
+            )
+          }
+        </ol>
       </div>
     );
   }
