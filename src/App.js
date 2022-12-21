@@ -13,7 +13,8 @@ class App extends React.Component {
       seconds: 0,
       decySeconds: 0,
       isActive: false,
-      rounds: []
+      rounds: [],
+      inputValue: ""
     }
   }
 
@@ -77,6 +78,19 @@ class App extends React.Component {
     })
   }
 
+  handleSubmit = (event) => {
+    console.log(this.state.inputValue)
+    event.preventDefault();
+  }
+
+  inputChange = (event) => {
+    this.setState((state, props) => {
+      return {
+        inputValue: event.target.value
+      }
+    })
+  }
+
   render() {
     return (
       <div>
@@ -90,6 +104,10 @@ class App extends React.Component {
           addRound={this.addRound}
         ></StoperToolbar>
         <List title="Rounds" rounds={this.state.rounds}></List>
+        <form onSubmit={this.handleSubmit}>
+          <input value={this.state.inputValue} onChange={this.inputChange}/>
+          <input type="submit" value="Submit" />
+        </form>
       </div>
     );
   }
