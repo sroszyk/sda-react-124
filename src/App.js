@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import List from "./List";
+import StoperToolbar from './StoperToolbar';
 
 class App extends React.Component {
 
@@ -81,10 +82,13 @@ class App extends React.Component {
       <div>
         <h1>Stoper</h1>
         <h3>{this.state.seconds} : {this.state.decySeconds}</h3>
-        {!this.state.isActive && <button onClick={this.startStoper}>Start</button>}
-        {!this.state.isActive && <button onClick={this.resetStoper}>Reset</button>}
-        {this.state.isActive && <button onClick={this.stopStoper}>Stop</button>}
-        {this.state.isActive && <button onClick={this.addRound}>Round</button>}
+        <StoperToolbar
+          isActive={this.state.isActive}
+          startStoper={this.startStoper}
+          resetStoper={this.resetStoper}
+          stopStoper={this.stopStoper}
+          addRound={this.addRound}
+        ></StoperToolbar>
         <List title="Rounds" rounds={this.state.rounds}></List>
       </div>
     );
