@@ -8,9 +8,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seconds: 0
+      seconds: 0,
+      decySeconds: 0
     }
-
   }
 
   componentWillUnmount() {
@@ -20,11 +20,19 @@ class App extends React.Component {
   startStoper = () => {
     this.stoperId = setInterval(() => {
       this.setState((state, props) => {
-        return {
-          seconds: state.seconds + 1
+        if (state.decySeconds === 9) {
+          return {
+            decySeconds: 0,
+            seconds: state.seconds + 1
+          }
+        }
+        else {
+          return {
+            decySeconds: state.decySeconds + 1,
+          }
         }
       })
-    }, 1000);
+    }, 100);
   }
 
   stopStoper = () => {
@@ -35,7 +43,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Stoper</h1>
-        <h3>{this.state.seconds}</h3>
+        <h3>{this.state.seconds} : {this.state.decySeconds}</h3>
         <button onClick={this.startStoper}>Start</button>
         <button onClick={this.stopStoper}>Stop</button>
       </div>
