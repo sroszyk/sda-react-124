@@ -1,116 +1,107 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import List from "./List";
 import StoperToolbar from './StoperToolbar';
+import userEvent from '@testing-library/user-event';
 
-class App extends React.Component {
+function App(props) {
 
-  stoperId;
+  const [stoper, setStoper] = useState({
+    seconds: 0,
+    decySeconds: 0
+  });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      seconds: 0,
-      decySeconds: 0,
-      isActive: false,
-      rounds: [],
-      inputValue: ""
-    }
-  }
+  const [isActive, setIsActive] = userEvent(false);
 
-  componentWillUnmount() {
-    clearInterval(this.stoperId);
-  }
+  let stoperId;
 
-  startStoper = () => {
-    this.setState((state, props) => {
-      return {
-        isActive: true
+  // componentWillUnmount() {
+  //   clearInterval(this.stoperId);
+  // }
+
+  const startStoper = () => {
+    setIsActive(true);
+
+    stoperId = setInterval(() => {
+      if (stoper.decySeconds === 9) {
+        setStoper({
+          decySeconds: 0,
+          seconds: stoper.seconds + 1
+        })
       }
-    });
-
-    this.stoperId = setInterval(() => {
-      this.setState((state, props) => {
-        if (state.decySeconds === 9) {
-          return {
-            decySeconds: 0,
-            seconds: state.seconds + 1
-          }
-        }
-        else {
-          return {
-            decySeconds: state.decySeconds + 1,
-          }
-        }
-      })
+      else {
+        setStoper({
+          decySeconds: stoper.decySeconds + 1,
+        })
+      }
     }, 100);
   }
 
-  stopStoper = () => {
-    this.setState((state, props) => {
-      return {
-        isActive: false
-      }
-    });
+  // stopStoper = () => {
+  //   this.setState((state, props) => {
+  //     return {
+  //       isActive: false
+  //     }
+  //   });
 
-    clearInterval(this.stoperId);
-  }
+  //   clearInterval(this.stoperId);
+  // }
 
-  resetStoper = () => {
-    this.setState((state, props) => {
-      return {
-        seconds: 0,
-        decySeconds: 0,
-        rounds: []
-      }
-    })
-  }
+  // resetStoper = () => {
+  //   this.setState((state, props) => {
+  //     return {
+  //       seconds: 0,
+  //       decySeconds: 0,
+  //       rounds: []
+  //     }
+  //   })
+  // }
 
-  addRound = () => {
-    this.setState((state, props) => {
+  // addRound = () => {
+  //   this.setState((state, props) => {
 
-      return {
-        rounds: [...state.rounds, {
-          seconds: state.seconds,
-          decySeconds: state.decySeconds
-        }]
-      }
-    })
-  }
+  //     return {
+  //       rounds: [...state.rounds, {
+  //         seconds: state.seconds,
+  //         decySeconds: state.decySeconds
+  //       }]
+  //     }
+  //   })
+  // }
 
-  handleSubmit = (event) => {
-    console.log(this.state.inputValue)
-    event.preventDefault();
-  }
+  // handleSubmit = (event) => {
+  //   console.log(this.state.inputValue)
+  //   event.preventDefault();
+  // }
 
-  inputChange = (event) => {
-    this.setState((state, props) => {
-      return {
-        inputValue: event.target.value
-      }
-    })
-  }
+  // inputChange = (event) => {
+  //   this.setState((state, props) => {
+  //     return {
+  //       inputValue: event.target.value
+  //     }
+  //   })
+  // }
 
-  render() {
-    return (
-      <div>
-        <h1>Stoper</h1>
-        <h3>{this.state.seconds} : {this.state.decySeconds}</h3>
-        <StoperToolbar
-          isActive={this.state.isActive}
-          startStoper={this.startStoper}
-          resetStoper={this.resetStoper}
-          stopStoper={this.stopStoper}
-          addRound={this.addRound}
-        ></StoperToolbar>
-        <List title="Rounds" rounds={this.state.rounds}></List>
-        <form onSubmit={this.handleSubmit}>
-          <input value={this.state.inputValue} onChange={this.inputChange}/>
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    );
-  }
+
+  return (
+    <div>
+      <h1>Stoper</h1>
+      <h3>{stoper.seconds} : {stoper.decySeconds}</h3>
+      {/* <StoperToolbar
+        isActive={this.state.isActive}
+        startStoper={this.startStoper}
+        resetStoper={this.resetStoper}
+        stopStoper={this.stopStoper}
+        addRound={this.addRound}
+      ></StoperToolbar>
+      <List title="Rounds" rounds={this.state.rounds}></List>
+      <form onSubmit={this.handleSubmit}>
+        <input value={this.state.inputValue} onChange={this.inputChange} />
+        <input type="submit" value="Submit" />
+      </form> */}
+    </div>
+  );
+
 
 }
 
