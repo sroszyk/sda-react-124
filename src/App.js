@@ -1,8 +1,7 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from "./List";
 import StoperToolbar from './StoperToolbar';
-import userEvent from '@testing-library/user-event';
 
 function App(props) {
 
@@ -11,9 +10,9 @@ function App(props) {
     decySeconds: 0
   });
 
-  const [isActive, setIsActive] = userEvent(false);
-
-  let stoperId;
+  const [isActive, setIsActive] = useState(false);
+  const [rounds, setRounds] = useState([]);
+  const [stoperId, setStoperId] = useState(undefined);
 
   // componentWillUnmount() {
   //   clearInterval(this.stoperId);
@@ -21,53 +20,43 @@ function App(props) {
 
   const startStoper = () => {
     setIsActive(true);
-
-    stoperId = setInterval(() => {
-      if (stoper.decySeconds === 9) {
-        setStoper({
-          decySeconds: 0,
-          seconds: stoper.seconds + 1
+    setStoperId(
+      setInterval(() => {
+        setStoper((prevStoper) => {
+          if (prevStoper.decySeconds === 9) {
+            return {
+              decySeconds: 0,
+              seconds: prevStoper.seconds + 1
+            }
+          }
+          else {
+            return {
+              decySeconds: prevStoper.decySeconds + 1,
+              seconds: prevStoper.seconds
+            }
+          }
         })
-      }
-      else {
-        setStoper({
-          decySeconds: stoper.decySeconds + 1,
-        })
-      }
-    }, 100);
+      }, 100));
   }
 
-  // stopStoper = () => {
-  //   this.setState((state, props) => {
-  //     return {
-  //       isActive: false
-  //     }
-  //   });
+  const stopStoper = () => {
+    setIsActive(false);
+    clearInterval(stoperId);
+  }
 
-  //   clearInterval(this.stoperId);
-  // }
+  const resetStoper = () => {
+    setStoper({
+      seconds: 0,
+      decySeconds: 0
+    });
+  }
 
-  // resetStoper = () => {
-  //   this.setState((state, props) => {
-  //     return {
-  //       seconds: 0,
-  //       decySeconds: 0,
-  //       rounds: []
-  //     }
-  //   })
-  // }
-
-  // addRound = () => {
-  //   this.setState((state, props) => {
-
-  //     return {
-  //       rounds: [...state.rounds, {
-  //         seconds: state.seconds,
-  //         decySeconds: state.decySeconds
-  //       }]
-  //     }
-  //   })
-  // }
+  const addRound = () => {
+    setRounds([...rounds, {
+      seconds: stoper.seconds,
+      decySeconds: stoper.decySeconds
+    }])
+  }
 
   // handleSubmit = (event) => {
   //   console.log(this.state.inputValue)
@@ -87,15 +76,15 @@ function App(props) {
     <div>
       <h1>Stoper</h1>
       <h3>{stoper.seconds} : {stoper.decySeconds}</h3>
-      {/* <StoperToolbar
-        isActive={this.state.isActive}
-        startStoper={this.startStoper}
-        resetStoper={this.resetStoper}
-        stopStoper={this.stopStoper}
-        addRound={this.addRound}
+      <StoperToolbar
+        isActive={isActive}
+        startStoper={startStoper}
+        resetStoper={resetStoper}
+        stopStoper={stopStoper}
+        addRound={addRound}
       ></StoperToolbar>
-      <List title="Rounds" rounds={this.state.rounds}></List>
-      <form onSubmit={this.handleSubmit}>
+      <List title="Rounds" rounds={rounds}></List>
+      {/* <form onSubmit={this.handleSubmit}>
         <input value={this.state.inputValue} onChange={this.inputChange} />
         <input type="submit" value="Submit" />
       </form> */}
