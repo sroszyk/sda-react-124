@@ -27,13 +27,17 @@ class App extends React.Component {
     }, 1000);
   }
 
+  stopStoper = () => {
+    clearInterval(this.stoperId);
+  }
+
   render() {
     return (
       <div>
         <h1>Stoper</h1>
         <h3>{this.state.seconds}</h3>
         <button onClick={this.startStoper}>Start</button>
-        
+        <button onClick={this.stopStoper}>Stop</button>
       </div>
     );
   }
