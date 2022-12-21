@@ -9,7 +9,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       seconds: 0,
-      decySeconds: 0
+      decySeconds: 0,
+      isActive: false
     }
   }
 
@@ -18,6 +19,12 @@ class App extends React.Component {
   }
 
   startStoper = () => {
+    this.setState((state, props) => {
+      return {
+        isActive: true
+      }
+    });
+
     this.stoperId = setInterval(() => {
       this.setState((state, props) => {
         if (state.decySeconds === 9) {
@@ -36,6 +43,12 @@ class App extends React.Component {
   }
 
   stopStoper = () => {
+    this.setState((state, props) => {
+      return {
+        isActive: false
+      }
+    });
+
     clearInterval(this.stoperId);
   }
 
@@ -44,8 +57,8 @@ class App extends React.Component {
       <div>
         <h1>Stoper</h1>
         <h3>{this.state.seconds} : {this.state.decySeconds}</h3>
-        <button onClick={this.startStoper}>Start</button>
-        <button onClick={this.stopStoper}>Stop</button>
+        {!this.state.isActive && <button onClick={this.startStoper}>Start</button>}
+        {this.state.isActive && <button onClick={this.stopStoper}>Stop</button>}
       </div>
     );
   }
