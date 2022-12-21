@@ -52,12 +52,22 @@ class App extends React.Component {
     clearInterval(this.stoperId);
   }
 
+  resetStoper = () => {
+    this.setState((state, props) => {
+      return {
+        seconds: 0,
+        decySeconds: 0
+      }
+    })
+  }
+
   render() {
     return (
       <div>
         <h1>Stoper</h1>
         <h3>{this.state.seconds} : {this.state.decySeconds}</h3>
         {!this.state.isActive && <button onClick={this.startStoper}>Start</button>}
+        {!this.state.isActive && <button onClick={this.resetStoper}>Reset</button>}
         {this.state.isActive && <button onClick={this.stopStoper}>Stop</button>}
       </div>
     );
