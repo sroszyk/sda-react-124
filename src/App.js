@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import List from "./List";
 
 class App extends React.Component {
 
@@ -49,7 +50,7 @@ class App extends React.Component {
         isActive: false
       }
     });
-    
+
     clearInterval(this.stoperId);
   }
 
@@ -84,13 +85,7 @@ class App extends React.Component {
         {!this.state.isActive && <button onClick={this.resetStoper}>Reset</button>}
         {this.state.isActive && <button onClick={this.stopStoper}>Stop</button>}
         {this.state.isActive && <button onClick={this.addRound}>Round</button>}
-        <ol>
-          {
-            this.state.rounds.map((round, idx) =>
-              <li key={idx}>{round.seconds} : {round.decySeconds}</li>
-            )
-          }
-        </ol>
+        <List title="Rounds" rounds={this.state.rounds}></List>
       </div>
     );
   }
